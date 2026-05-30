@@ -54,16 +54,16 @@ def plot_weather_heatmap(df: pd.DataFrame, outdir: str) -> str:
     str
         Path to the saved figure.
     """
-    # 1. Compute average monthly temperature for each city
+    # Compute average monthly temperature for each city
     monthly_avg = df.groupby(["city", "month"])["avg_temp"].mean().reset_index()
 
-    # 2. Pivot: city as index, month as columns, avg temp as values
+    # Pivot: city as index, month as columns, avg temp as values
     pivot = monthly_avg.pivot(index="city", columns="month", values="avg_temp")
 
-    # 3. Sort columns in calendar order (1–12)
+    # Sort columns in calendar order (1–12)
     pivot = pivot[sorted(pivot.columns)]
 
-    # 4. Create heatmap
+    # Create heatmap
     fig, ax = plt.subplots(figsize=(10, 4))
     sns.heatmap(
         pivot,
@@ -75,12 +75,12 @@ def plot_weather_heatmap(df: pd.DataFrame, outdir: str) -> str:
         cbar_kws={"label": "Average temperature"},
     )
 
-    # 5. Labels and title
+    # Labels and title
     ax.set_title("Average monthly temperature by city", fontsize=14, fontweight="bold")
     ax.set_xlabel("Month")
     ax.set_ylabel("City")
 
-    # 6. Save figure
+    # Save figure
     out_path = os.path.join(outdir, "weather_heatmap.png")
     plt.tight_layout()
     plt.savefig(out_path, dpi=300)
@@ -111,22 +111,26 @@ def plot_weather_scatter(df: pd.DataFrame, outdir: str) -> str:
     str
         Path to the saved figure.
     """
-    # 1. Clean 'precip': coerce to numeric, fill NaN with 0.0
+    # Clean 'precip': coerce to numeric, fill NaN with 0.0
     df = df.copy()
     df["precip"] = pd.to_numeric(df["precip"], errors="coerce").fillna(0.0)
 
-    # 2. Set up figure
+    # Set up figure
     fig, ax = plt.subplots(figsize=(9, 6))
 
-    # 3. Marker size range
+    # Marker size range
     size_range = (20, 300)
 
-    # 4. Scatter plot (legend=False so we draw custom legends)
+    # Determine fixed order for cities
+    cities = sorted(df["city"].unique())
+
+    # Scatter plot (legend=False so we draw custom legends)
     sns.scatterplot(
         data=df,
         x="avg_humidity",
         y="avg_temp",
         hue="city",
+        hue_order=cities,
         size="precip",
         sizes=size_range,
         alpha=0.65,
@@ -134,9 +138,9 @@ def plot_weather_scatter(df: pd.DataFrame, outdir: str) -> str:
         legend=False,
     )
 
-    # 5. Custom legend for cities (hue)
+    # Custom legend for cities (hue)
     palette = sns.color_palette(n_colors=df["city"].nunique())
-    cities = sorted(df["city"].unique())
+    
     city_handles = [
         mlines.Line2D(
             [], [],
@@ -157,7 +161,7 @@ def plot_weather_scatter(df: pd.DataFrame, outdir: str) -> str:
     )
     ax.add_artist(legend_city)
 
-    # 6. Custom legend for precipitation sizes
+    # Custom legend for precipitation sizes
     precip_max = df["precip"].max()
     precip_vals = np.linspace(0, precip_max, 4)
     size_handles = []
@@ -188,7 +192,7 @@ def plot_weather_scatter(df: pd.DataFrame, outdir: str) -> str:
         fontweight="bold",
     )
 
-    # 8. Save figure
+    # Save figure
     out_path = os.path.join(outdir, "weather_scatter.png")
     plt.tight_layout()
     plt.savefig(out_path, dpi=300)
@@ -217,7 +221,7 @@ def plot_global_temp_heatmap(df: pd.DataFrame, outdir: str) -> str:
     month_abbrs = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
-    # 1. Melt wide → long, keeping only month columns Jan–Dec
+    # Melt wide → long, keeping only month columns Jan–Dec
     long_df = df.melt(
         id_vars=["Year"],
         value_vars=month_abbrs,
@@ -225,20 +229,20 @@ def plot_global_temp_heatmap(df: pd.DataFrame, outdir: str) -> str:
         value_name="Anomaly",
     )
 
-    # 2. Map month abbreviation → month number
+    # Map month abbreviation → month number
     month_map = {m: i + 1 for i, m in enumerate(month_abbrs)}
     long_df["MonthNum"] = long_df["Month"].map(month_map)
 
-    # 3. Pivot back to matrix: Year × MonthNum
+    # Pivot back to matrix: Year × MonthNum
     matrix = long_df.pivot(index="Year", columns="MonthNum", values="Anomaly")
 
-    # 4. Sort by year ascending
+    # Sort by year ascending
     matrix = matrix.sort_index(ascending=True)
 
-    # 5. Set up figure
+    # Set up figure
     fig, ax = plt.subplots(figsize=(10, 8))
 
-    # 6. Draw heatmap
+    # Draw heatmap
     sns.heatmap(
         matrix,
         ax=ax,
@@ -250,11 +254,11 @@ def plot_global_temp_heatmap(df: pd.DataFrame, outdir: str) -> str:
         cbar_kws={"label": "Temperature anomaly (°C relative to 1951–1980)"},
     )
 
-    # 7. Customize x-ticks: month abbreviations, rotated 45°
+    # Customize x-ticks: month abbreviations, rotated 45°
     ax.set_xticks(np.arange(len(month_abbrs)) + 0.5)
     ax.set_xticklabels(month_abbrs, rotation=45, ha="right")
 
-    # 8. Labels and title
+    # Labels and title
     ax.set_title(
         "Global land–ocean temperature anomalies (1880–2025)",
         fontsize=13,
@@ -263,7 +267,7 @@ def plot_global_temp_heatmap(df: pd.DataFrame, outdir: str) -> str:
     ax.set_xlabel("Month")
     ax.set_ylabel("Year")
 
-    # 9. Save figure
+    # Save figure
     out_path = os.path.join(outdir, "global_temp_heatmap.png")
     plt.tight_layout()
     plt.savefig(out_path, dpi=300)
@@ -293,15 +297,15 @@ def plot_minnesota_precip_line(df: pd.DataFrame, outdir: str) -> str:
     """
     df = df.copy()
 
-    # 1. Create 'date' column from year and month (day=1)
+    # Create 'date' column from year and month (day=1)
     df["date"] = pd.to_datetime(
         dict(year=df["year"], month=df["mo"], day=1)
     )
 
-    # 2. Set up figure
+    # Set up figure
     fig, ax = plt.subplots(figsize=(10, 6))
 
-    # 3. Line plot
+    # Line plot
     sns.lineplot(
         data=df,
         x="date",
@@ -314,14 +318,14 @@ def plot_minnesota_precip_line(df: pd.DataFrame, outdir: str) -> str:
     ax.set_xlabel("Year")
     ax.set_ylabel("Precipitation (inches)")
 
-    # 4. Title
+    # Title
     ax.set_title(
         "Monthly precipitation by Minnesota site (1927–1936)",
         fontsize=13,
         fontweight="bold",
     )
 
-    # 5. Legend outside plot
+    # Legend outside plot
     ax.legend(
         bbox_to_anchor=(1.05, 1),
         loc="upper left",
@@ -329,7 +333,7 @@ def plot_minnesota_precip_line(df: pd.DataFrame, outdir: str) -> str:
         frameon=True,
     )
 
-    # 6. Save figure
+    # Save figure
     out_path = os.path.join(outdir, "minnesota_precip_line.png")
     plt.tight_layout()
     plt.savefig(out_path, dpi=300)

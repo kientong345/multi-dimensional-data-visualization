@@ -45,74 +45,6 @@ Bản đồ nhiệt này tổng hợp dữ liệu thời tiết hàng ngày thà
 
 Dữ liệu lúa mạch Minnesota được sử dụng để khảo sát lượng mưa thay đổi như thế nào giữa các địa điểm trong khoảng thời gian mười năm. Biểu đồ đường được chọn vì nó truyền tải các xu hướng thời gian một cách hiệu quả. Script tạo ra một cột ngày tháng từ năm và tháng, sau đó vẽ lượng mưa (tính bằng inch) theo trục thời gian này, với các đường riêng biệt cho từng địa điểm. Phần chú giải giúp xác định rõ các địa điểm và bố cục được căn chỉnh chặt chẽ giúp biểu đồ gọn gàng. Biểu đồ cho thấy lượng mưa đạt đỉnh vào các tháng mùa hè (tháng 6 – tháng 8) tại tất cả các địa điểm, phản ánh khí hậu lục địa của Minnesota, và Waseca cùng St. Paul có xu hướng nhận được nhiều lượng mưa hơn so với Morris hoặc Crookston. Việc thiếu dữ liệu của Duluth vào tháng 12 năm 1931 được thể hiện rõ ràng bằng một khoảng trống ngắt quãng trên đường biểu diễn【635360545156382†L76-L81】.
 
-## 🔍 Insight chi tiết từ các biểu đồ
-
-### 1. Bản đồ nhiệt nhiệt độ trung bình hàng tháng (`weather_heatmap.png`)
-
-![Weather Heatmap](output/weather_heatmap.png)
-
-**Biên độ nhiệt theo mùa (seasonal range):**
-
-| Thành phố | Tháng lạnh nhất | Tháng nóng nhất | Biên độ dao động |
-|-----------|-----------------|-----------------|-----------------|
-| Auckland | Tháng 7: 52.4°F (11.3°C) | Tháng 2: 69.6°F (20.9°C) | ~17°F (~9.6°C) |
-| Beijing | Tháng 1: 25.1°F (−3.8°C) | Tháng 7: 81.0°F (27.2°C) | ~56°F (~31°C) |
-| Chicago | Tháng 12: 26.4°F (−3.1°C) | Tháng 7: 75.3°F (24.1°C) | ~49°F (~27°C) |
-| Mumbai | Tháng 1: 74.7°F (23.7°C) | Tháng 5: 86.6°F (30.3°C) | ~12°F (~6.6°C) |
-| San Diego | Tháng 1: 58.5°F (14.7°C) | Tháng 8: 73.2°F (22.9°C) | ~15°F (~8.3°C) |
-
-**Các phát hiện chính:**
-
-- **Auckland nghịch pha** với các thành phố Bắc Bán Cầu: mùa lạnh nhất rơi vào tháng 6–8 (mùa đông Nam Bán Cầu) và ấm nhất vào tháng 1–2. Điều này khiến Auckland trở thành điểm đối sánh thú vị với Chicago và Beijing — khi hai thành phố này đang ở đỉnh hè (tháng 7 ~75–81°F), Auckland chỉ đạt 52.4°F.
-- **Beijing và Chicago** thể hiện khí hậu lục địa điển hình với biên độ nhiệt khổng lồ: cả hai đều có mùa đông dưới mức đóng băng (25–27°F ≈ −3°C) và mùa hè vượt 75°F. Sự chuyển màu từ xanh đậm sang đỏ đậm trong một hàng duy nhất của heatmap là minh chứng trực quan rõ ràng nhất.
-- **Mumbai** gần như không thay đổi màu sắc trong suốt 12 tháng — tất cả các ô đều đỏ đồng đều — phản ánh đặc trưng của vùng nhiệt đới ven biển. Đỉnh nhiệt độ tháng 5 (86.6°F) xảy ra *trước* mùa mưa gió mùa, sau đó nhiệt độ hạ nhẹ do lượng bức xạ thực tế bị mây che và mưa hấp thụ.
-- **San Diego** thể hiện khí hậu Địa Trung Hải điển hình: ổn định quanh năm (58–73°F), không có mùa đông lạnh hay mùa hè quá khắc nghiệt, là thành phố có biên độ dao động nhỏ thứ hai sau Mumbai.
-
----
-
-### 2. Biểu đồ phân tán nhiệt độ – độ ẩm – lượng mưa (`weather_scatter.png`)
-
-![Weather Scatter](output/weather_scatter.png)
-
-**Các phát hiện chính:**
-
-- **Phân tầng rõ ràng theo thành phố:** Biểu đồ tự nhiên phân tách 5 thành phố thành các vùng không gian khác nhau. Mumbai (đỏ) tập trung ở góc dưới-phải — độ ẩm cao (>60%) nhưng nhiệt độ dao động bất thường xuống rất thấp (~1–10°F), đây là các ngày ghi nhận bất thường hoặc lỗi dữ liệu đáng chú ý. Chicago (xanh lá) trải dài rộng nhất theo trục Y (4°F – 92°F), phản ánh biên độ nhiệt lớn nhất trong năm.
-- **Mưa tập trung ở độ ẩm cao:** Các điểm có kích thước lớn (lượng mưa nhiều, lên tới 12.68 inches) xuất hiện chủ yếu khi độ ẩm vượt 70–80%, đặc biệt dày đặc ở góc trên-phải (nhiệt độ cao + độ ẩm cao). Điều này cho thấy trong bộ dữ liệu này, các sự kiện mưa lớn gắn liền với điều kiện nóng-ẩm.
-- **Beijing mùa hè bùng phát độ ẩm:** Các điểm cam (Beijing) tập trung thành cụm dày ở vùng 75–90% độ ẩm và 75–85°F — đây là thời kỳ mùa hè ẩm của Bắc Kinh (tháng 6–8), tương phản với phân tán về phía trái-dưới vào mùa đông khô lạnh.
-- **San Diego và Auckland** chiếm vùng trung tâm của biểu đồ (50–80% độ ẩm, 50–75°F) và gần như không có các điểm mưa lớn, xác nhận đặc tính khí hậu ôn hòa, ít mưa bất thường của hai thành phố này.
-
----
-
-### 3. Bản đồ nhiệt dị thường nhiệt độ toàn cầu (`global_temp_heatmap.png`)
-
-![Global Temp Heatmap](output/global_temp_heatmap.png)
-
-**Các phát hiện chính:**
-
-- **Xu hướng ấm lên toàn cầu hiện ra tức thì:** Chỉ nhìn lướt qua bản đồ nhiệt từ trên xuống dưới, màu nền chuyển từ xanh lam (lạnh hơn chuẩn 1951–1980) sang trắng (trung tính) rồi đỏ ngày càng đậm. Ranh giới chuyển tiếp xấp xỉ ở thập niên 1970–1980 — đây chính xác là giai đoạn được chọn làm mốc chuẩn.
-- **Giai đoạn 1880–1920:** Phần lớn các ô có màu xanh lam nhạt đến xanh trung bình, cho thấy nhiệt độ toàn cầu thấp hơn mốc chuẩn khoảng −0.2 đến −0.5°C. Tháng 1–3 (Jan–Mar) của các năm đầu thế kỷ 20 thường xanh đậm hơn các tháng hè — gợi ý mùa đông lạnh hơn mức chuẩn nhiều hơn mùa hè.
-- **Thập niên 1940–1970:** Vùng trắng và cam nhạt chiếm ưu thế. Đây là giai đoạn "tạm dừng ấm lên" mà một số nhà khoa học khí hậu đề cập, một phần do aerosol từ công nghiệp hóa mạnh sau Thế chiến II che chắn ánh sáng Mặt Trời.
-- **Từ 1988 trở đi:** Không còn ô xanh lam nào — toàn bộ ma trận chuyển sang cam và đỏ. Sự ấm lên tăng tốc rõ rệt, với mỗi thập kỷ đậm màu hơn thập kỷ trước.
-- **Năm 2016 nổi bật nhất** với dải đỏ đậm liên tục từ Jan đến Aug — đây là hệ quả của El Niño cực mạnh 2015–2016 đẩy dị thường vượt +1.5°C ở nhiều tháng. Năm 2020 và 2023–2024 cũng hiện ra đỏ đậm, nhất quán với dữ liệu kỷ lục nhiệt toàn cầu.
-- **Khoảng trắng cuối biểu đồ (2024–2025):** Một số tháng cuối năm 2024 và 2025 thiếu dữ liệu (màu trắng), phản ánh thực tế dữ liệu GISTEMP được cập nhật định kỳ và chưa đầy đủ tới thời điểm tải xuống.
-
----
-
-### 4. Biểu đồ đường lượng mưa hàng tháng Minnesota (`minnesota_precip_line.png`)
-
-![Minnesota Precip Line](output/minnesota_precip_line.png)
-
-**Các phát hiện chính:**
-
-- **Nhịp điệu mùa vụ nhất quán:** Toàn bộ 6 địa điểm đều thể hiện chu kỳ mưa mùa hè rõ ràng — các đỉnh cao lặp đi lặp lại mỗi năm vào khoảng tháng 5–8 (mùa sinh trưởng của lúa mạch), rồi giảm xuống gần 0 vào mùa đông. Điều này xác nhận đặc điểm khí hậu lục địa ẩm của Minnesota.
-- **Waseca (tím) có lượng mưa cực đoan cao nhất:** Đỉnh ~10.1 inches vào mùa hè 1935 là cao nhất trong toàn bộ chuỗi thời gian — gần gấp đôi mức phổ biến ở các địa điểm khác. Waseca nằm ở phía đông-nam Minnesota, gần hơn với luồng ẩm từ Vịnh Mexico, giải thích tại sao nơi đây nhìn chung nhận lượng mưa lớn hơn.
-- **Crookston (xanh lá) ổn định và thấp nhất:** Nằm ở phía tây-bắc Minnesota (vùng bán khô hạn hơn), Crookston hiếm khi vượt 5 inches và thường nằm thấp hơn các địa điểm khác trong cùng thời điểm — phù hợp với gradient mưa Đông-Tây đặc trưng của vùng Trung Tây Hoa Kỳ.
-- **Năm 1930 có lượng mưa bất thường vào mùa xuân:** Đỉnh ~8.5 inches của Waseca và ~6.7 inches của StPaul vào đầu năm 1930 (tháng 3–4) là sự kiện nổi bật, xảy ra ngay trước thập kỷ Dust Bowl — giai đoạn hạn hán nghiêm trọng ở vùng Trung Bắc Mỹ.
-- **Sự biến động năm 1931–1932:** Toàn bộ các đường đồng loạt hạ thấp và dao động ít hơn trong giai đoạn 1931–1932, phản ánh xu hướng khô hạn đầu thập niên Dust Bowl (1930–1936) ảnh hưởng lên toàn khu vực.
-- **Đồng bộ giữa các địa điểm:** Dù có biên độ khác nhau, các đỉnh và đáy của 6 đường nhìn chung trùng nhau theo thời gian, cho thấy các hệ thống thời tiết vĩ mô chi phối đồng đều toàn vùng hơn là yếu tố địa phương.
-
----
-
 ## 💡 Lựa chọn, thách thức và hướng phát triển
 
 ### 🎨 Tại sao lại chọn các hình thức trực quan hóa này?
@@ -132,3 +64,47 @@ Có một số hướng để mở rộng dự án này. Đối với dữ liệ
 ---
 
 **Lưu ý về nguồn trích dẫn:** Mô tả về các bộ dữ liệu `Weather` và `minnesota.barley.weather` được lấy từ tài liệu chính thức của các gói R tương ứng, trong đó làm rõ các định nghĩa biến số và nguồn dữ liệu【209500219273106†L78-L137】【635360545156382†L22-L59】. Thông tin về bộ dữ liệu GISTEMP — bao gồm sự kết hợp giữa dữ liệu trạm khí tượng GHCN v4 với nhiệt độ bề mặt đại dương ERSST v5 và mốc cơ sở 1951–1980 — được trích xuất từ tài liệu của NASA và NOAA【238077913597605†L30-L38】【57940960815465†L124-L139】. Những nguồn tài liệu này giải thích xuất xứ và cách diễn giải các bộ dữ liệu được sử dụng tại đây.
+
+
+## 🔍 Insight chi tiết từ các biểu đồ
+
+### 1. Bản đồ nhiệt nhiệt độ trung bình hàng tháng (`weather_heatmap.png`)
+
+![Weather Heatmap](output/weather_heatmap.png)
+
+- **Khác biệt về bán cầu:** Auckland (Nam bán cầu) có chu kỳ nhiệt độ hoàn toàn đảo ngược so với 4 thành phố còn lại (Bắc bán cầu)
+- **Biến động mùa rõ rệt:** Beijing và Chicago thể hiện sự chênh lệch nhiệt độ theo mùa vô cùng lớn
+- **Khí hậu ôn hòa của San Diego:** Nhiệt độ quanh năm ổn định, không có sự chênh lệch lớn giữa mùa hè và mùa đông
+- **Mumbai luôn nóng ẩm:** Nhiệt độ trung bình hàng tháng của Mumbai luôn ở mức cao nhất trong số 5 thành phố, phản ánh khí hậu nhiệt đới đặc trưng của nó.
+
+---
+
+### 2. Biểu đồ phân tán nhiệt độ – độ ẩm – lượng mưa (`weather_scatter.png`)
+
+![Weather Scatter](output/weather_scatter.png)
+
+- **Điều kiện có mưa lớn:** Các điểm mưa lớn ở góc trên bên phải của biểu đồ, cho thấy rằng những ngày có mưa lớn thường đi kèm với độ ẩm cao và nhiệt độ ấm hơn, chủ yếu xảy ra ở Mumbai
+- **Khí hậu ôn hòa và khô:** San Diego có quần thể data gom lại ở trung tâm, minh chứng cho khí hậu ôn hòa và hiếm có mưa lớn
+- **Khí hậu biến động khắc nghiệt:** Beijing và Chicago có quần thể data trải dài và phân tán, minh chứng cho khí hậu biến động khắc nghiệt
+
+---
+
+### 3. Bản đồ nhiệt dị thường nhiệt độ toàn cầu (`global_temp_heatmap.png`)
+
+![Global Temp Heatmap](output/global_temp_heatmap.png)
+
+- **Sự nóng lên toàn cầu:** Nhiệt độ trung bình toàn cầu tăng dần theo thời gian, thể hiện qua sự chuyển màu từ xanh lam sang đỏ
+- **Tốc độ nóng lên tăng nhanh ở các năm gần đây:** Các năm gần đây có nhiệt độ trung bình cao hơn các năm trước, màu đỏ càng ngày càng đậm
+- **Nóng quanh năm:** Những năm gần đây màu đỏ trải dài suốt 12 tháng
+
+---
+
+### 4. Biểu đồ đường lượng mưa hàng tháng Minnesota (`minnesota_precip_line.png`)
+
+![Minnesota Precip Line](output/minnesota_precip_line.png)
+
+- **Tính chu kỳ:** Lượng mưa tại tất cả các địa điểm đều dao động theo một chu kỳ rất đều đặn hàng năm
+- **Tính đồng bộ:** Lượng mưa ở các trạm dao động cùng pha nhau, suy ra thời tiết có tính toàn cục trên toàn khu vực
+- **1 số điểm đột biến cục bộ:** Trạm Waseca đã ghi nhận mức lượng mưa đột biến lên tới hơn 10 inch vào khoảng năm 1935
+
+---
